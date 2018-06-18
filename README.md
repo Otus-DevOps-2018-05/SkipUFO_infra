@@ -19,5 +19,5 @@ SkipUFO Infra repository
 
 # Настройка VPN
 
-bastion_IP=35.228.89.200
-someinternalhost_IP=10.166.0.3
+bastion_IP = 35.228.89.200
+someinternalhost_IP = 10.166.0.3
