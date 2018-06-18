@@ -16,3 +16,8 @@ SkipUFO Infra repository
   User     appuser       # имя пользователя, которым заходим на внутренний ресурс
   Port     2222          # порт для ssh-доступа
   HostName localhost     # имя хоста
+
+# Настройка VPN
+
+bastion_IP=35.228.89.200
+someinternalhost_IP=10.166.0.3
