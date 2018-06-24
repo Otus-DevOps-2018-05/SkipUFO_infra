@@ -1,9 +1,9 @@
 {
     "variables": {
-	"disk_size": "10", 
-	"disk_type": "pd-standard", 
-	"network": "default", 
-	"tags": "reddit-app-servers", 
+	"disk-size": "10", 
+	"disk-type": "pd-standard", 
+	"nw": "default", 
+	"tgs": "reddit-app-servers", 
 	"image-family": "reddit-app-server"
     }
 }
