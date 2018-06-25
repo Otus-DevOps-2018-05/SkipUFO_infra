@@ -1,9 +1,9 @@
 {
-    "variables": {
-	"disk-size": "10", 
-	"disk-type": "pd-standard", 
-	"nw": "default", 
-	"tgs": "reddit-app-servers", 
-	"image-family": "reddit-app-server"
-    }
+    "project-id": "project",
+    "source-image-family": "ubuntu-1604-lts", 
+    "disk-size": "10", 
+    "disk-type": "pd-standard", 
+    "nw": "default", 
+    "tgs": "reddit-app-servers", 
+    "image-family": "reddit-app-server"
 }
