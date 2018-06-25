@@ -53,3 +53,17 @@ gcloud compute instances create reddit-app\
   --tags puma-server \
   --restart-on-failure \
   --metadata startup-script-url startup-script=gs://bucket/startup_script.sh
+
+# Создание образа VM при помощи packer
+
+Создание образа запускается командой
+packer build [OPTIONS] file.json
+
+В папке packer приведены файлы 2 образов 
+ubuntu16 - mongo + ruby
+immutable - ubuntu16 + app (Задание со *)
+
+Рассмотрено использование переменных (параметров) для создания образов VM (variables)
+-var 'key=value' - при использовании в команде
+-var-file file.json - при использовании файла с переменными
+
