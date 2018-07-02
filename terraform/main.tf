@@ -4,6 +4,7 @@ provider "google" {
   region  = "${var.region}"
 }
 
+# Create app VM-instance
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
   machine_type = "g1-small"
@@ -42,6 +43,7 @@ resource "google_compute_instance" "app" {
   }
 }
 
+# Create firewall rule
 resource "google_compute_firewall" "firewall_puma" {
   name    = "allow-puma-default"
   network = "default"
@@ -53,4 +55,10 @@ resource "google_compute_firewall" "firewall_puma" {
 
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["reddit-app"]
+}
+
+# Add public keys 
+resource "google_compute_project_metadata_item" "ssh-keys" {
+    key = "ssh-keys"
+    value = "${join("\n", var.ssh_credentials)}"
 }

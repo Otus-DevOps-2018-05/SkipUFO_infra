@@ -20,6 +20,12 @@ variable private_key_path {
 }
 
 variable zone {
-  description = "Zone"
-  default     = "europe-west1-b"
+    description = "Zone"
+    default     = "europe-west1-b"
+}
+
+variable ssh_credentials {
+    description = "List of ssh credentials for project (wide) ssh connections (<appuser>:<ssh-pub-key>)"
+    type = "list"
+    default = []
 }
