@@ -2,6 +2,7 @@
 SkipUFO Infra repository
 
 # Получение доступа к внутренним ресурсам через ресурс с внешним доступом (DMZ?)
+
 1. Создаем ключи для доступа ко внутренним ресурсам и ресурсу, через 
    который будет доступ ко внутренним ресурсам (не забываем, что с 
    внешнего должен быть доступ ко внутренним ресурсам)
@@ -21,3 +22,34 @@ SkipUFO Infra repository
 
 bastion_IP = 35.228.89.200
 someinternalhost_IP = 10.166.0.3
+
+# Настройка puma-server (hw4)
+
+testapp_IP = 35.228.187.101
+testapp_port = 9292
+
+# Создание VM с deploy приложения
+(Использование startup-script https://cloud.google.com/compute/docs/startupscript)
+
+1/ Использование локального файла с ОС, с которой запускается команда gcloud
+
+gcloud compute instances create reddit-app\
+  --boot-disk-size=10GB \
+  --image-family ubuntu-1604-lts \
+  --image-project=ubuntu-os-cloud \
+  --machine-type=g1-small \
+  --tags puma-server \
+  --restart-on-failure \
+  --metadata startup-script-from-file startup-script=startup_script.sh
+
+startup_script.sh в репозитории
+2/ Использование файла из bucket
+
+gcloud compute instances create reddit-app\
+  --boot-disk-size=10GB \
+  --image-family ubuntu-1604-lts \
+  --image-project=ubuntu-os-cloud \
+  --machine-type=g1-small \
+  --tags puma-server \
+  --restart-on-failure \
+  --metadata startup-script-url startup-script=gs://bucket/startup_script.sh
