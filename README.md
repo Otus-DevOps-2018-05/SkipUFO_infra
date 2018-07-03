@@ -31,7 +31,7 @@ testapp_port = 9292
 # Создание VM с deploy приложения
 (Использование startup-script https://cloud.google.com/compute/docs/startupscript)
 
-1/ Использование локального файла с ОС, с которой запускается команда gcloud
+1. Использование локального файла с ОС, с которой запускается команда gcloud
 
 gcloud compute instances create reddit-app\
   --boot-disk-size=10GB \
@@ -43,7 +43,7 @@ gcloud compute instances create reddit-app\
   --metadata startup-script-from-file startup-script=startup_script.sh
 
 startup_script.sh в репозитории
-2/ Использование файла из bucket
+2. Использование файла из bucket
 
 gcloud compute instances create reddit-app\
   --boot-disk-size=10GB \
@@ -80,3 +80,5 @@ output    - описание output переменных
 Каждый ресурс (vm, firewall rules, metadata) описывается отдельным блоком resource и зависит от платформы запуска
 
 ВАЖНО. Для GCP (и скорее всего для любой платформы) данные перезаписываются (т.е. если мы зальем через web-интерфейс ключи, и потом тоже самое через терраформ, то ключи добавленные через web-интерфейс будут удалены)
+
+Когда развертываем инфраструктуру с балансировщиком, то самое оптимальное - использовать 
