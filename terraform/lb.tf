@@ -18,9 +18,10 @@ resource "google_compute_http_health_check" "health-check" {
 resource "google_compute_target_pool" "reddit-pool" {
   name = "reddit-pool"
 
+  count = "${var.instance_count}"
+
   instances = [
     "${google_compute_instance.app.self_link}",
-    "${google_compute_instance.app2.self_link}",
   ]
 
   health_checks = [
@@ -36,40 +37,43 @@ resource "google_compute_forwarding_rule" "reddit-lb-forwarding-rule" {
   port_range = "9292"
 }
 
-resource "google_compute_instance" "app2" {
-  name         = "reddit-app2"
+variable instance_count {
+  description = "Instance count"
+  default     = 1
+}
+
+variable template_disk_image {
+  description = "Template disk image family"
+  default     = "reddit-full"
+}
+
+resource "google_compute_instance_template" "reddit-app-template" {
+  name         = "reddit-app"
   machine_type = "g1-small"
-  zone         = "${var.zone}"
   tags         = ["reddit-app"]
 
-  boot_disk {
-    initialize_params {
-      image = "${var.disk_image}"
-    }
+  disk {
+    source_image = "reddit-full"
+    auto_delete  = true
+    boot         = true
   }
 
   network_interface {
     network       = "default"
     access_config = {}
   }
+}
 
-  metadata {
-    ssh-keys = "appuser:${file(var.public_key_path)}"
-  }
+resource "google_compute_instance_group_manager" "reddit-app-group-manager" {
+  name               = "reddit-app-group-manager"
+  base_instance_name = "reddit-base"
+  instance_template  = "${google_compute_instance_template.reddit-app-template.self_link}"
+  target_pools       = ["${google_compute_target_pool.reddit-pool.self_link}"]
+  zone               = "europe-west1-b"
+  target_size        = "${var.instance_count}"
 
-  provisioner "file" {
-    source      = "files/puma.service"
-    destination = "/tmp/puma.service"
-  }
-
-  provisioner "remote-exec" {
-    script = "files/deploy.sh"
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "appuser"
-    agent       = false
-    private_key = "${file(var.private_key_path)}"
+  auto_healing_policies {
+    health_check      = "${google_compute_http_health_check.health-check.self_link}"
+    initial_delay_sec = 300
   }
 }
