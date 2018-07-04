@@ -77,3 +77,7 @@ resource "google_compute_instance_group_manager" "reddit-app-group-manager" {
     initial_delay_sec = 300
   }
 }
+
+output "lb_ip" {
+  value = "${google_compute_forwarding_rule.reddit-lb-forwarding-rule.ip_address}"
+}
