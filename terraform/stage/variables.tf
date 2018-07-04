@@ -39,3 +39,13 @@ variable db_disk_image {
   description = "Disk image with db for reddit app"
   default     = "reddit-db"
 }
+
+variable app_machine_type {
+  description = "Machine type for reddit app"
+  default     = "f1-micro"
+}
+
+variable db_machine_type {
+  description = "Machine type for reddit db"
+  default     = "f1-micro"
+}

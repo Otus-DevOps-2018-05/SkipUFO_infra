@@ -8,6 +8,11 @@ variable zone {
 }
 
 variable app_disk_image {
-  description = "Disk image with db for reddit app"
-  default     = "reddit-db"
+  description = "Disk image for reddit app"
+  default     = "reddit-app-base"
+}
+
+variable machine_type {
+  description = "Machine type"
+  default     = "g1-small"
 }
