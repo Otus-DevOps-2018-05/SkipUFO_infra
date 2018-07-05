@@ -16,3 +16,11 @@ variable machine_type {
   description = "Machine type"
   default     = "g1-small"
 }
+
+variable db_reddit_ip {
+  description = "Reddit DB Ip Address"
+}
+
+variable private_key_path {
+  description = "Private key path"
+}
