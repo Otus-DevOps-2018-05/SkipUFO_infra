@@ -42,10 +42,10 @@ variable db_disk_image {
 
 variable app_machine_type {
   description = "Machine type for reddit app"
-  default     = "g1-small"
+  default     = "f1-micro"
 }
 
 variable db_machine_type {
   description = "Machine type for reddit db"
-  default     = "g1-small"
+  default     = "f1-micro"
 }

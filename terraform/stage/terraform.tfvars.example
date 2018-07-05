@@ -1,0 +1,15 @@
+project = "project-id"
+
+public_key_path = "~/.ssh/appuser.pub"
+
+private_key_path = "~/.ssh/appuser"
+
+disk_image = "reddit-base"
+
+app_disk_image = "ubuntu-1604-lts"
+
+ssh_credentials = [
+  "appuser:${file("~/.ssh/appuser.pub")}",
+  "appuser1:${file("~/.ssh/appuser1.pub")}",
+]
+
