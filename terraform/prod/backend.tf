@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = "${var.project}-storage-bucket-prod"
+    bucket = "organic-diode-207603-storage-bucket-prod"
     prefix = "terraform/state"
   }
 }
