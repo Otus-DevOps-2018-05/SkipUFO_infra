@@ -24,3 +24,7 @@ variable db_reddit_ip {
 variable private_key_path {
   description = "Private key path"
 }
+
+variable provision_enabled {
+  description = "Whether provision is enabled"
+}
