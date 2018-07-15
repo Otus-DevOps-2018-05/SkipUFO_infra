@@ -1,19 +1,13 @@
-provider "google" {
-  version = "1.4.0"
-  project = "${var.project}"
-  region  = "${var.region}"
-}
-
 # Create app VM-instance
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
-  machine_type = "g1-small"
+  machine_type = "${var.machine_type}"
   zone         = "${var.zone}"
   tags         = ["reddit-app"]
 
   boot_disk {
     initialize_params {
-      image = "${var.disk_image}"
+      image = "${var.app_disk_image}"
     }
   }
 
@@ -25,21 +19,36 @@ resource "google_compute_instance" "app" {
   metadata {
     ssh-keys = "appuser:${file(var.public_key_path)}"
   }
+}
+
+resource "null_resource" "app" {
+  count = "${var.provision_enabled ? 1 : 0}"
+
+  connection {
+    host        = "${google_compute_instance.app.network_interface.0.access_config.0.assigned_nat_ip}"
+    type        = "ssh"
+    user        = "appuser"
+    agent       = "false"
+    private_key = "${file(var.private_key_path)}"
+  }
 
   provisioner "file" {
-    source      = "files/puma.service"
+    source      = "${path.module}/files/puma.service"
     destination = "/tmp/puma.service"
   }
 
   provisioner "remote-exec" {
-    script = "files/deploy.sh"
+    inline = [
+      "sudo echo DATABASE_URL=${var.db_reddit_ip} > /tmp/puma.enviroment",
+    ]
   }
 
-  connection {
-    type        = "ssh"
-    user        = "appuser"
-    agent       = false
-    private_key = "${file(var.private_key_path)}"
+  provisioner "remote-exec" {
+    script = "${path.module}/files/install_ruby.sh"
+  }
+
+  provisioner "remote-exec" {
+    script = "${path.module}/files/deploy.sh"
   }
 }
 
@@ -55,10 +64,4 @@ resource "google_compute_firewall" "firewall_puma" {
 
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["reddit-app"]
-}
-
-# Add public keys 
-resource "google_compute_project_metadata_item" "ssh-keys" {
-    key = "ssh-keys"
-    value = "${join("\n", var.ssh_credentials)}"
 }

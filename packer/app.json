@@ -1,7 +1,7 @@
 {
     "variables": {
 	"project-id": null, 
-	"source-image-family": null, 
+	"source-image-family": "ubuntu-1604-lts", 
 	"machine-type": "f1-micro", 
 	"disk-size": "10", 
 	"disk-type": "pd-standard", 
@@ -12,19 +12,19 @@
         {
 	    "project_id": "{{user `project-id`}}",
             "type": "googlecompute",
-            "image_name": "reddit-base-{{timestamp}}",
-            "image_family": "reddit-base",
-	    "source_image_family": "{{user `source-image-family`}}",
+            "image_name": "reddit-app-base-{{timestamp}}",
+            "image_family": "reddit-app-base",
+	        "source_image_family": "{{user `source-image-family`}}",
             "zone": "europe-west1-b",
             "ssh_username": "appuser",
             "machine_type": "{{user `machine-type`}}",
-	    "disk_size": "{{user `disk-size`}}",
-	    "disk_type": "{{user `disk-type`}}",
-	    "network": "{{user `nw`}}", 
-	    "tags": "{{user `tgs`}}"
+	        "disk_size": "{{user `disk-size`}}",
+	        "disk_type": "{{user `disk-type`}}",
+	        "network": "{{user `nw`}}", 
+	        "tags": "{{user `tgs`}}"
         }
     ],
-    "provisioners": [
+    "provisioners": [ 
         {
             "type": "shell",
             "script": "scripts/install_ruby.sh",
@@ -32,8 +32,8 @@
         },
         {
             "type": "shell",
-            "script": "scripts/install_mongodb.sh",
-            "execute_command": "sudo {{.Path}}"
+            "script": "files/install_app.sh",
+            "execute_command": "{{.Path}}"
         }
     ]
 }
