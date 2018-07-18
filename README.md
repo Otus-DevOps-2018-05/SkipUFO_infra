@@ -9,6 +9,7 @@ SkipUFO Infra repository
 - [Homework-7: Terraform-2](#homework-7-terraform-2)
 - [Homework-8: Ansible-1](#homework-8-ansible-1)
 - [Homework-9: Ansible-2](#homework-9-ansible-2)
+- [Homework-10: Ansible-3](#homework-10-ansible-3)
 
 # Homework-3: Cloud-1
 ## 1.1 Что было сделано
@@ -167,6 +168,23 @@ http_health_check (port)
  - Изучено применение templates для подстановки необходимых параметров
  - Сделано разделение одного playbook на несколько
  - Сделано разделение на разные файлы - такой подход позволяет уменьшить использование тегов при запуске playbook
+## 1.2 В задании со *
+ - Была найдена статья https://alex.dzyoba.com/blog/terraform-ansible/, в которой предлагается:
+   если для развертывания инфраструктуры (GCP) используется terraform, то можно сформировать dynamic inventory из tfstate, и не использовать gce.py. 
+   В общем же случае, можно написать скрипт, который из любого хранилища (хоть excel), сможет сформировать dynamic inventory
+
+# Homework-10: Ansible-3
+## 1.1 Что было сделано
+ - Созданы "шаблоны" ролей (ansible-galaxy init <имя роли>)
+ - Перенесены описания playbook развертывания app, db в соответствующие роли
+ - Сделано удобное разделение вызова нужного окружения (используя папку environments/stage(prod)), для того чтобы явным образом раскатывать playbook на нужной инфраструктуре (по-умолчанию в ansible.cfg сделан stage)
+ - Созданы групповые переменные (group_vars) (Директория group_vars, созданная в директории плейбука или инвентори файла, позволяет создавать файлы (ВАЖНО! имена, которых должны соответствовать названиям групп в инвентори файле) для определения переменных для группы хостов.) 
+ - Согласно рекомендации (best practice) сделана следующая структура: файлы - ansible.cfg, requirements.txt, папки - roles, playbooks, environments
+ - Для подключения использования ролей, в ansible.cfg прописывается roles_path
+ - Попробовано использование хранилища ролей Ansible Galaxy (использована роль для настройки проксирования nginx)
+ - Изучена работа с ansible vault (использование vault.key с настройкой в ansible.cfg - vault_password_file). Чтобы зашифровать нужно использовать ansible-vault encrypt <имя файла>, для редактирования ansible-vault edit <имя файла>, для расшифровки ansible-vault decrypt <имя файла>
+## 1.2 В самостоятельном задании
+ - В описании инфраструктуры terraform порт 9292 файрвола puma-firewall изменен на 80 (в модуле app)
 ## 1.2 В задании со *
  - Была найдена статья https://alex.dzyoba.com/blog/terraform-ansible/, в которой предлагается:
    если для развертывания инфраструктуры (GCP) используется terraform, то можно сформировать dynamic inventory из tfstate, и не использовать gce.py. 
