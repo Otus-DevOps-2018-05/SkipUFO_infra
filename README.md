@@ -8,6 +8,7 @@ SkipUFO Infra repository
 - [Homework-6: Terraform-1](#homework-6-terraform-1)
 - [Homework-7: Terraform-2](#homework-7-terraform-2)
 - [Homework-8: Ansible-1](#homework-8-ansible-1)
+- [Homework-9: Ansible-2](#homework-9-ansible-2)
 
 # Homework-3: Cloud-1
 ## 1.1 Что было сделано
@@ -159,3 +160,14 @@ http_health_check (port)
 
  ## 1.2 Задание со *
  - Изучено создание скрипта для получения динамического inventory (py-скрипт должен обрабатывать входной параметр --list, и минимально возвращать json в формате { "group_name": { "hosts": [<hosts>]} }), также файл *.py должен быть исполняемым
+
+# Homework-9: Ansible-2
+## 1.1 Что было сделано
+ - Создан playbook для настройки mongo, развертывания приложения
+ - Изучено применение templates для подстановки необходимых параметров
+ - Сделано разделение одного playbook на несколько
+ - Сделано разделение на разные файлы - такой подход позволяет уменьшить использование тегов при запуске playbook
+## 1.2 В задании со *
+ - Была найдена статья https://alex.dzyoba.com/blog/terraform-ansible/, в которой предлагается:
+   если для развертывания инфраструктуры (GCP) используется terraform, то можно сформировать dynamic inventory из tfstate, и не использовать gce.py. 
+   В общем же случае, можно написать скрипт, который из любого хранилища (хоть excel), сможет сформировать dynamic inventory
