@@ -21,5 +21,4 @@
       name: mongodb-org
       state: present
 
-  - include
-    - db.yml
+  - include: db.yml
