@@ -21,8 +21,5 @@
       name: mongodb-org
       state: present
 
-  # Включаем сервис
-  - name: Configure service supervisor
-    systemd:
-      name: mongod
-      enabled: yes
+  - include
+    - db.yml
