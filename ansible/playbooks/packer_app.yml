@@ -1,6 +1,6 @@
 ---
 - name: Install Ruby && Bundler
-  hosts: all
+  hosts: app
   become: true
   tasks:
   # Установим в цикле все зависимости

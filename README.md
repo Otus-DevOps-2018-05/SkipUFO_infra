@@ -10,6 +10,7 @@ SkipUFO Infra repository
 - [Homework-8: Ansible-1](#homework-8-ansible-1)
 - [Homework-9: Ansible-2](#homework-9-ansible-2)
 - [Homework-10: Ansible-3](#homework-10-ansible-3)
+- [Homework-11: Ansible-4](#homework-11-ansible-4)
 
 # Homework-3: Cloud-1
 ## 1.1 Что было сделано
@@ -190,4 +191,41 @@ http_health_check (port)
  - Есть несколько вариантов реализации - 
   -- добавить папку tests, туда закинуть InSpec проект (части можно подсмотреть в репозитории hw), который будет реализовывать необходимое и добавить запуск скрипта в секции before_install в .travis.yml. При этом запускать в контейнере образа Express42 (docker exec hw-test tests/run.sh).
   -- добавить папку tests, но тесты запускать не в контейнере, а значит нужно будет установить необходимый софт (packer, terraform, tflint, ansible, ansible, ansible-lint). Такой способ лучше, но при этом скорость сборки значительно увеличится.
-  -- лучший вариант - взять образ Express42 с установленным софтом и скопировать запуск образа и тестов из репозитория Express42, т.е. фактически перенести себе в репозиторий 
+  -- лучший вариант - взять образ Express42 с установленным софтом и скопировать запуск образа и тестов из репозитория Express42, т.е. фактически перенести себе в репозиторий. Т.е. travis будет запускать 2 контейнера и гонять похожие тесты. 
+PS/ Не выложил код, потому что пока ещё не сделал, а по домашкам немного отстал.
+
+# Homework-11: Ansible-4
+## 1.1 Что было сделано
+- Установлен Vagrant (https://www.vagrantup.com/downloads.html)
+- Переделаны и параметризованы таски и модифицированы плейбуки для запуска инфраструктуры при помощи Vagrant на провайдере VirtualBox
+- Изучено как получить под каким пользователем vagrant запускает плейбуки (vagrant ssh-config, либо заходим на хост vagrant ssh <hostname>)
+- Установлена molecule (были проблемы с последней версией, поставил в requirements.txt - molecule==2.10)
+- Установлен дополнительно python-pytest (иначе molecule verify падала sh.CommandNotFound: py.test)
+- Переделана роль для сборки app, db образов
+## 1.2 В задании со *
+- Настройка nginx: если попробовать вставить код следующим образом
+```
+"app:vars" => { 
+          "db_host" => "10.10.10.10", 
+          "nginx_sites" => "default:
+                            - listen 80
+                            - server_name \"reddit\"
+                            - location / {
+                              proxy_pass http://127.0.0.1:9292;
+                            }"
+        }
+```
+то получим ошибку 
+```
+fatal: [appserver]: FAILED! => {"msg": "with_dict expects a dict"}
+``` 
+пробовал подсмотреть в репозитории jdauphant.nginx, но там используется в коде yml-теста, в итоге пришел к такому
+```
+ansible.extra_vars = {
+      "deploy_user" => "vagrant", 
+      "nginx_sites" => {
+        "default": [ "listen 80", "server_name \"reddit\"", "location / { proxy_pass http://127.0.0.1:9292; }" ]
+      }
+    }
+```
+- Второе задание со * не сделал (оно также как в предыдущем задании работа с travis)
